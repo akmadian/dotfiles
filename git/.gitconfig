@@ -1,7 +1,7 @@
 [user]
 	email = akmadian@gmail.com
 	name = akmadian
-	signingkey = akmadian@gmail.com
+	signingkey = 4F2699AB41C34E78
 
 [credential]
 	helper = store
