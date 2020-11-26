@@ -11,3 +11,7 @@
 
 [tag]
 	gpgsign = true
+
+[alias]
+	p = push
+	cam = commit -a -m
