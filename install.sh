@@ -14,3 +14,5 @@ sudo ln -sf ~/src/dotfiles/bash/.prompt ~/.bash_prompt
 sudo ln -sf ~/src/dotfiles/bash/.path ~/.path
 sudo ln -sf ~/src/dotfiles/bash/.functions ~/.bash_functions
 sudo ln -sf ~/src/dotfiles/bash/.profile ~/.profile
+
+sudo ln -sf ~/src/dotfiles/git/.gitconfig ~/.gitconfig
