@@ -20,9 +20,39 @@ nas-mount() {
   sudo mount 192.168.0.6:/nfs/$1 ~/descartes/$1
 }
 
+audio-out() {
+  if [ $1 = "headphones" ] || [ $1 == "hp" ]; then
+    pacmd set-default-sink 1
+  elif [ $1 = "speakers" ] || [ $1 == "sp" ]; then
+    pacmd set-default-sink 3
+  fi
+}
+
+mine() {
+  echo "functions
+  audio-out/ao    [hp/headphones | sp/speakers] - change audio out
+  nas-mount/nm    [share name]                  - mounts share from nas
+  vpn-start                                     - vpn stuff
+  vpn-stop
+  vpn-status
+  vpn-connect                                   - only use on client
+
+aliases
+  la    -> ls -a
+  fgui  -> nautilus .                           - starts the file gui at current dir
+  cls   -> clear
+
+  g     -> git
+  gc    -> git c
+  gp    -> git push
+  git p -> git push
+  git c -> git commit -a -m
+"
+}
 
 export -f vpn-start
 export -f vpn-stop
 export -f vpn-status
 export -f vpn-connect
 export -f nas-mount
+export -f audio-out

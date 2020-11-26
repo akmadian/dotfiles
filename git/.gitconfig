@@ -3,6 +3,9 @@
 	name = akmadian
 	signingkey = 4F2699AB41C34E78
 
+[github]
+	user = akmadian
+
 [credential]
 	helper = store
 
@@ -12,6 +15,9 @@
 [tag]
 	gpgsign = true
 
+[grep]
+	lineNumber = true
+
 [alias]
 	p = push
-	cam = commit -a -m
+	c = commit -a -m
