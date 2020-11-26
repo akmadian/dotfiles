@@ -1,0 +1,13 @@
+[user]
+	email = akmadian@gmail.com
+	name = akmadian
+	signingkey = akmadian@gmail.com
+
+[credential]
+	helper = store
+
+[commit]
+	gpgsign = true
+
+[tag]
+	gpgsign = true
