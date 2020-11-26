@@ -1,0 +1,4 @@
+export PATH=/opt/firefox/firefox:$PATH
+export PATH=/usr/lib/hyper/resources/bin:$PATH
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/bin/
+export PATH=$PATH:$JAVA_HOME/bin/

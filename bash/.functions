@@ -1,0 +1,28 @@
+vpn-start() {
+  sudo systemctl start openvpn@server
+  sudo systemctl status openvpn@server
+}
+
+vpn-stop() {
+  sudo systemctl stop openvpn@server
+  sudo systemctl status openvpn@server
+}
+
+vpn-status() {
+  sudo systemctl status openvpn@server
+}
+
+vpn-connect() {
+  sudo openvpn /etc/openvpn/client/client.conf
+}
+
+nas-mount() {
+  sudo mount 192.168.0.6:/nfs/$1 ~/descartes/$1
+}
+
+
+export -f vpn-start
+export -f vpn-stop
+export -f vpn-status
+export -f vpn-connect
+export -f nas-mount
