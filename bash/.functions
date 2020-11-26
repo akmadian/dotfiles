@@ -17,6 +17,7 @@ vpn-connect() {
 }
 
 nas-mount() {
+  sudo mkdir -p ~/descartes/$1
   sudo mount 192.168.0.6:/nfs/$1 ~/descartes/$1
 }
 
@@ -41,6 +42,7 @@ aliases
   la    -> ls -a
   fgui  -> nautilus .                           - starts the file gui at current dir
   cls   -> clear
+  um    -> umount
 
   g     -> git
   gc    -> git c
