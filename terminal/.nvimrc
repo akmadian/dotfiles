@@ -1,12 +1,15 @@
 call plug#begin('~/.vim/plugged')
-
-" To Install plugins, run :PlugInstall
-
 " Utils
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'niklaas/lightline-gitdiff'
+
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'jiangmiao/auto-pairs'
+Plug 'Yggdroot/indentLine'
+Plug 'mcchrish/nnn.vim'
+Plug 'vimwiki/vimwiki'
+
 Plug 'mhinz/vim-startify' " Start screen
 Plug 'vim-scripts/taglist.vim'
 Plug 'vim-scripts/sudo.vim'
@@ -20,29 +23,45 @@ Plug  'danilo-augusto/vim-afterglow'
 Plug 'jalvesaq/Nvim-R', {'branch': 'stable'} " R
 call plug#end()
 
+set nocompatible
+filetype plugin on
+syntax on
+
 set number
 set list
-set listchars+=eol:_
-set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
-au BufLeave * silent! wall_ " Auto save
+set listchars=eol:·
+set tabstop=4 expandtab shiftwidth=4 softtabstop=4
+
 colorscheme afterglow
+autocmd TextChanged,TextChangedI,BufLeave * silent! wall
 let g:afterglow_inherit_background=0
 let g:afterglow_italic_comments=1
 
-"autocmd VimEnter * NERDTree " Auto start nerdtree
-"autocmd BufWinEnter * silent NERDTreeMirror " Open existing nerdtree on each new tab
-let g:NERDTreeDirArrowExpandable = '▸'
-let g:NERDTreeDirArrowCollapsible = '▾'
+let g:vimwiki_list = [{'path': '~/dotfiles/vimwiki/'}]
+
+let g:indentLine_char = '┆'
 
 " Want to take VCS inspo from base16-spacemacs
 let g:airline_theme='afterglow'
 
 function! StatuslineGit()
-  let l:branchname = system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
-  return strlen(l:branchname) > 0?'  '.l:branchname.' ':''
+    let l:branchname = system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
+    return strlen(l:branchname) > 0 ? l:branchname : ''
 endfunction
 
-let g:airline_section_b='\uE0A0 %{StatuslineGit()}'
+let g:lightline#gitdiff#indicator_added='+'
+let g:lightline#gitdiff#indicator_deleted='-'
+let g:lightline#gitdiff#indicator_modified='~'
+let g:lightline#gitdiff#show_empty_indicators=1
+let g:airline#extensions#tagbar#enabled=1
+let g:airline_section_b='%{StatuslineGit()} ⎇ %{lightline#gitdiff#get()}'
+let g:airline_section_c='%{expand("%t")}'
+
+nnoremap <leader>n :NnnPicker %:p:h<CR>
+let g:nnn#action = {
+    \ '<c-t>': 'tab split'}
+let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debug' } }
+let g:nnn#command = 'nnn -d -e -H -S'
 
 "Tab navigation
 map <C-Left> :tabprevious<CR>
@@ -69,23 +88,8 @@ map  <C-v>       pi
 imap <C-v>      <Esc>pi
 imap <C-z>      <Esc>ui
 
-
-" To get out of terminal mode with esc
-tnoremap <Esc> <C-\><C-n>
-
-cnoreabbrev save w
-cnoreabbrev saveall wa
-cnoreabbrev quit q
-cnoreabbrev renametab file
-cnoreabbrev reloadvimrc source ~/.nvimrc
-cnoreabbrev closeall qa
-
 " PLUGIN CONFIG
 " coc.nvim
 autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
-inoremap <expr> <c-space> coc#refresh()
-" inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : '\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>'
-
-inoremap <silent><expr> <TAB> pumvisible() ? coc#_select_confirm() : '\<C-g>u\<TAB>'
-
+inoremap <silent><expr> <TAB> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<TAB>"

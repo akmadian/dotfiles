@@ -3,7 +3,7 @@ neofetch | lolcat
 # TMUX
 # start if not started
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-  exec tmux
+  exec tmux -u
 fi
 
 precmd () {
