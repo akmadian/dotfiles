@@ -2,3 +2,6 @@
 
 == Vim/ Tmux/ Terminal ==
     * https://thoughtbot.com/blog/vim-splits-move-faster-and-more-naturally -- Vim Splits Guide
+
+== CS ==
+    * https://www.bigocheatsheet.com/ -- Big O Cheat Sheet

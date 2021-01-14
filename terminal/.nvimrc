@@ -9,6 +9,9 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'Yggdroot/indentLine'
 Plug 'mcchrish/nnn.vim'
 Plug 'vimwiki/vimwiki'
+Plug 'junegunn/goyo.vim'
+" Plug 'plasticboy/vim-markdown'
+" Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & npm install' }
 
 Plug 'mhinz/vim-startify' " Start screen
 Plug 'vim-scripts/taglist.vim'
@@ -21,6 +24,7 @@ Plug  'danilo-augusto/vim-afterglow'
 
 " Langs
 Plug 'jalvesaq/Nvim-R', {'branch': 'stable'} " R
+Plug 'lervag/vimtex'
 call plug#end()
 
 set nocompatible

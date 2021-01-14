@@ -1,0 +1,21 @@
+= CLI =
+
+[Optional], <replace with whatever>
+
+== Git ==
+    Git Commands to Live By: https://medium.com/better-programming/git-commands-to-live-by-349ab1fe3139
+    * Check out Remote Branch                : git checkout [-b <new-local-branch-name>] -t <remote>/<branch>
+    * Delete Remote Branch                   : git branch -d <branch> OR git push <remote> :<branch>
+    * Change Remote URL                      : git remote set-url <remote> <newurl>
+    * Reset Single File to Most Recent Commit: git checkout [<commit>] -- <path(s)> EX: git checkout -- README.md resets README.md to version in most recent commit.
+    * Remove Ignored Files From Remote       : git rm [-r] [-n] --cached <path(s)> EX: -n performs dry run, -r for dirs
+        * git rm -r -n --cached . (Dry Run)
+        * git rm -r --cached .
+        * git add .
+        * git commit -m "Remove ignored files"
+        * git push
+
+== Code Stuff ==
+    * Spin up web server
+        * Python: python -m http.server <port>
+        * Node  : npm i -g http-server && http-server -p <port>
