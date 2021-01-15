@@ -1,7 +1,7 @@
 [user]
 	name = Ari Madian
 	email = akmadian@gmail.com
-	signingkey = 260FF937409D6A6D
+	signingkey = 027D4DD9770FACA3
 [commit]
 	gpgsign = true
 [credential]
