@@ -52,6 +52,7 @@ alias ga='git add .'
 alias gc='git commit -m'
 alias ai='sudo apt install'
 alias agi='sudo apt-get install'
+alias xcs='xclip -selection c'
 alias ws='python -m http.server 10000'
 
 nas-mount() {
