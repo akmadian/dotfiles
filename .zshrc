@@ -1,4 +1,4 @@
-neofetch | lolcat
+neofetch
 
 # TMUX
 # start if not started
@@ -19,7 +19,7 @@ export PATH=$HOME/cs/CSE-374/scripts:$PATH
 # Favorites: amuse, crunch, linuxonly
 ZSH_THEME="custom"
 
-CASE_SENSITIVE="false"
+CASE_SENSITIVE="true"
 DISABLE_AUTO_UPDATE="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
@@ -50,6 +50,8 @@ alias gs='git status'
 alias gp='git push'
 alias ga='git add .'
 alias gc='git commit -m'
+alias ai='sudo apt install'
+alias agi='sudo apt-get install'
 alias ws='python -m http.server 10000'
 
 nas-mount() {

@@ -41,24 +41,24 @@ prompt_jnrowe_precmd () {
 
     if [ "${vcs_info_msg_0_}" = "" ]; then
     
-        dir_status="%{$c1%}%n%{$c4%}@%{$c2%}%m%{$c0%}:%{$c3%}%#%{$c6%}->%{$c4%} %{$c0%}(%{$c5%}%?%{$c0%})"
+        dir_status="%{$c1%}%n%{$c4%}@%{$c2%}%m%{$c0%}:%{$c3%}%0/%{$c6%}->%{$c4%} %{$c0%}(%{$c5%}%?%{$c0%})"
         
         PROMPT='${dir_status} ${ret_status}%{$reset_color%}$ '
         
     elif [[ $(git diff --cached --name-status 2>/dev/null ) != "" ]]; then
     
-        dir_status="%{$c1%}%n%{$c4%}@%{$c2%}%m%{$c0%}:%{$c3%}%#%{$c6%}->%{$c4%} %{$c0%}(%{$c5%}%?%{$c0%})"
+        dir_status="%{$c1%}%n%{$c4%}@%{$c2%}%m%{$c0%}:%{$c3%}%0/%{$c6%}->%{$c4%} %{$c0%}(%{$c5%}%?%{$c0%})"
         
         PROMPT='${dir_status} ${vcs_info_msg_0_}%{$reset_color%}$ '
 
     elif [[ $(git diff --name-status 2>/dev/null ) != "" ]]; then
     
-        dir_status="%{$c1%}%n%{$c4%}@%{$c2%}%m%{$c0%}:%{$c3%}%#%{$c6%}->%{$c4%} %{$c0%}(%{$c5%}%?%{$c0%})"
+        dir_status="%{$c1%}%n%{$c4%}@%{$c2%}%m%{$c0%}:%{$c3%}%0/%{$c6%}->%{$c4%} %{$c0%}(%{$c5%}%?%{$c0%})"
         
         PROMPT='${dir_status}%{$reset_color%}%{$c9%}·>%{$c0%} '
         
     else
-        dir_status="%{$c1%}%n%{$c4%}@%{$c2%}%m%{$c0%}:%{$c3%}%#%{$c6%}->%{$c4%} %{$c0%}(%{$c5%}%?%{$c0%})"
+        dir_status="%{$c1%}%n%{$c4%}@%{$c2%}%m%{$c0%}:%{$c3%}%0/%{$c6%}->%{$c4%} %{$c0%}(%{$c5%}%?%{$c0%})"
         
         PROMPT='${dir_status} ${vcs_info_msg_0_}%{$reset_color%}$ '
     fi
