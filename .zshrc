@@ -14,6 +14,7 @@ export ZSH=$HOME/.oh-my-zsh
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export PATH=$HOME/cs/CSE-374/scripts:$PATH
+export GPG_TTY=$TTY
 
 # Themes: https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 # Favorites: amuse, crunch, linuxonly
