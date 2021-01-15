@@ -1,21 +1,8 @@
 [user]
-	email = akmadian@gmail.com
 	name = Ari Madian
-        signingkey = E4AE09E54301AB26
-
-[github]
-	user = akmadian
-
+	email = akmadian@gmail.com
+	signingkey = 260FF937409D6A6D
+[commit]
+	gpgsign = true
 [credential]
 	helper = store
-
-[commit]
-
-[tag]
-
-[grep]
-	lineNumber = true
-
-[alias]
-	p = push
-	c = commit -a -m
