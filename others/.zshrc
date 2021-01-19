@@ -13,8 +13,9 @@ precmd () {
 export ZSH=$HOME/.oh-my-zsh
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-export PATH=$HOME/cs/CSE-374/scripts:$PATH
+export PATH=$HOME/repos/cse374-21wi-monorepo/scripts:$PATH
 export GPG_TTY=$TTY
+export TMPDIR="/tmp"
 
 # Themes: https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 # Favorites: amuse, crunch, linuxonly
