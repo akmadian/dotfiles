@@ -2,3 +2,4 @@
     * [[Snippets]] -- Some useful snippets
     * [[Useful Links]]
     * [[Keymap Reference]]
+    * [[Decentralization]]

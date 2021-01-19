@@ -1,0 +1,9 @@
+= Infrastructure =
+    - Set up own email and site server
+        - Outsource email hosting to SaaS for reliability
+    - Transition off of google domains
+        - Find ethical domain registrar
+    - Find alternative to google drive
+    - Investigate possible own git server to transition essentials off of github?
+        - Mirror to github
+    - Move from lastpass to gnu passwordstore
