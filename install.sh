@@ -1,24 +1,27 @@
 echo "Installing dotfiles..."
-echo ".config dir:"
-
 pwd=$(pwd)
 
+echo ".config:"
+printf "  %-70s %-50s -> %-25s\n" "File Name" "Link Origin" "Link Destination"
 find .config -type f | while read fname; do
-  echo "  Creating symlink for file $fname: $pwd/$fname -> ~/$fname"
-
   eval frpath="$pwd/$fname"
   eval topath="~/$fname"
+
+  printf "  %-70s %-50s -> %-25s\n" "Creating symlink for file $fname:" "$frpath" "$topath"
 
   ln -sf $frpath $topath
 done
 
-#echo "scripts dir:"
-#find scripts -type f | while read fname; do
-#  truncatedFname=${fname%.sh}
-#  echo "  Creating symlink for script $fname ($truncatedFname): $pwd/$fname -> /usr/bin/$truncatedFname"
-#
-#  eval frpath="$pwd/$fname"
-#  eval topath="/usr/bin/$truncatedFname"
-#
-#  ln -sf $frpath $topath
-#done
+echo "\n.local:"
+printf "  %-70s %-60s -> %-25s\n" "File Name" "Link Origin" "Link Destination"
+find .local/bin -type f | while read fname; do
+  fNameNoExt=${fname%.sh}
+  fNameNoPath=$(basename "$fname")
+  fNameNoExtNoPath=$(basename "$truncatedFname")
+  eval frpath="$pwd/$fname"
+  eval topath="~/.local/bin/$fNameNoExtNoPath"
+
+  printf "  %-70s %-60s -> %-25s\n" "Creating symlink for script $fNameNoPath ($fNameNoExtNoPath):" "$frpath" "$topath"
+
+  ln -sf $frpath $topath
+done
