@@ -1,16 +1,24 @@
-#!/bin/sh
+echo "Installing dotfiles..."
+echo ".config dir:"
 
-echo "Creating Symlinks"
-set -x
+pwd=$(pwd)
 
-#ln -sf ~/dotfiles/.zshrc           ~/.zshrc
-ln -sf ~/dotfiles/config.fish      ~/.config/fish/config.fish
-ln -sf ~/dotfiles/.nvimrc          ~/.config/nvim/init.vim
-ln -sf ~/dotfiles/.tmux.conf       ~/.tmux.conf
-#ln -sf ~/dotfiles/custom.zsh-theme ~/.oh-my-zsh/themes/custom.zsh-theme
-# ln -sf ~/dotfiles/.Xresources      ~/.Xresources
-ln -sf ~/dotfiles/kitty.conf       ~/.config/kitty/kitty.conf
-ln -sf ~/dotfiles/git/.gitconfig   ~/.gitconfig
+find .config -type f | while read fname; do
+  echo "  Creating symlink for file $fname: $pwd/$fname -> ~/$fname"
 
-chmod +x ~/dotfiles/scripts/swao.sh
-sudo ln -sf ~/dotfiles/scripts/swao.sh /bin/swao
+  eval frpath="$pwd/$fname"
+  eval topath="~/$fname"
+
+  ln -sf $frpath $topath
+done
+
+#echo "scripts dir:"
+#find scripts -type f | while read fname; do
+#  truncatedFname=${fname%.sh}
+#  echo "  Creating symlink for script $fname ($truncatedFname): $pwd/$fname -> /usr/bin/$truncatedFname"
+#
+#  eval frpath="$pwd/$fname"
+#  eval topath="/usr/bin/$truncatedFname"
+#
+#  ln -sf $frpath $topath
+#done
