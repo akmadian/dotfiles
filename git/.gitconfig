@@ -1,8 +1,0 @@
-[user]
-	name = Ari Madian
-	email = akmadian@gmail.com
-	signingkey = 027D4DD9770FACA3
-[commit]
-	gpgsign = true
-[credential]
-	helper = store

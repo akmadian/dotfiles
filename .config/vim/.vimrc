@@ -1,4 +1,4 @@
-call plug#begin('~/.vim/plugged')
+plug#begin('~/.vim/plugged')
 " Utils
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -7,6 +7,8 @@ Plug 'niklaas/lightline-gitdiff'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'jiangmiao/auto-pairs'
 Plug 'Yggdroot/indentLine'
+Plug 'mcchrish/nnn.vim'
+
 Plug 'mcchrish/nnn.vim'
 Plug 'vimwiki/vimwiki'
 " Plug 'junegunn/goyo.vim'
@@ -65,7 +67,7 @@ nnoremap <leader>n :NnnPicker %:p:h<CR>
 let g:nnn#action = {
     \ '<c-t>': 'tab split'}
 let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debug' } }
-let g:nnn#command = 'nnn -d -e -H -S'
+et g:nnn#command = 'nnn -d -e -H -S'
 
 "Tab navigation
 map <C-Left> :tabprevious<CR>
