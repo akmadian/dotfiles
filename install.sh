@@ -19,9 +19,10 @@ find .local/bin -type f | while read fname; do
   fNameNoPath=$(basename "$fname")
   fNameNoExtNoPath=$(basename "$truncatedFname")
   eval frpath="$pwd/$fname"
-  eval topath="~/.local/bin/$fNameNoExtNoPath"
+  eval topath="~/$fNameNoExt"
 
   printf "  %-70s %-60s -> %-25s\n" "Creating symlink for script $fNameNoPath ($fNameNoExtNoPath):" "$frpath" "$topath"
+  chmod u+x $frpath
 
   ln -sf $frpath $topath
 done

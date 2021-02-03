@@ -5,6 +5,8 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'KeitaNakamura/neodark.vim'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug'] }
+Plug 'yuezk/vim-js'
 call plug#end()
 
 colorscheme neodark
@@ -57,4 +59,4 @@ autocmd BufWritePre * %s/\s\+$//e
 
 
 
-source ~/dotfiles/cocnvim.vim
+source ~/.config/nvim/cocnvim.vim
