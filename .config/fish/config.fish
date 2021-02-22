@@ -22,7 +22,6 @@ alias cdd="cd ~/Downloads"
 alias unpacktargz="tar xvzf"
 alias ssn="sudo shutdown now"
 alias sleep="systemctl suspend"
-alias nvim="~/Downloads/nvim.appimage"
 
 function fish_prompt
     set_color normal
@@ -30,26 +29,25 @@ function fish_prompt
     if [ git_branch = "" ]
         set gb "test"
     else
-        set gb ' {'$git_branch'}'
+        set gb $git_branch
     end
-  
-    tput bold
-    set_color red
-    echo -n '['
-    set_color yellow
+    set_color C9B091
     echo -n (whoami)
-    set_color green
+    set_color A6A780
     echo -n '@'
-    set_color blue
+    set_color D3A080
     echo -n (hostname)
-    set_color purple
+    set_color B1B666
     echo -n ' '(prompt_pwd)
-    set_color normal
+    set_color A45479
+    echo -n ' git'
+    set_color CAD89A
+    echo -n ':['
+    set_color A45479
     echo -n $gb
-    set_color red
-    echo -n ']'
+    set_color CAD89A
+    echo -n '] '
     set_color normal
-    echo -n '$ '
-    tput sgr0
+    echo -n '~ '
 end
 
