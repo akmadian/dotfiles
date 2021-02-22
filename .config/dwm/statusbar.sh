@@ -1,93 +1,61 @@
-#!/bin/sh
+#!/usr/bin/sh
 
-dwm_spotify () {
-    if ps -C spotify > /dev/null; then
-        PLAYER="spotify"
-    elif ps -C spotifyd > /dev/null; then
-        PLAYER="spotifyd"
-    fi
+eval __SENSORS_SYS="/home/ari/.config/dwm/__SENSORS_SYS"
+eval __SENSORS_BATT="/home/ari/.config/dwm/__SENSORS_BATT"
 
-    if [ "$PLAYER" = "spotify" ] || [ "$PLAYER" = "spotifyd" ]; then
-        ARTIST=$(playerctl metadata artist)
-        TRACK=$(playerctl metadata title)
-        POSITION=$(playerctl position | sed 's/..\{6\}$//')
-        DURATION=$(playerctl metadata mpris:length | sed 's/.\{6\}$//')
-        STATUS=$(playerctl status)
-        SHUFFLE=$(playerctl shuffle)
+touch $__SENSORS_SYS
+touch $__SENSORS_BATT
 
-        if [ "$IDENTIFIER" = "unicode" ]; then
-            if [ "$STATUS" = "Playing" ]; then
-                STATUS="▶"
-            else
-                STATUS="⏸"
-            fi
-
-            if [ "$SHUFFLE" = "On" ]; then
-                SHUFFLE=" 🔀"
-            else
-                SHUFFLE=""
-            fi
-        else
-            if [ "$STATUS" = "Playing" ]; then
-                STATUS="PLA"
-            else
-                STATUS="PAU"
-            fi
-
-            if [ "$SHUFFLE" = "On" ]; then
-                SHUFFLE=" S"
-            else
-                SHUFFLE=""
-            fi
-        fi
-
-        if [ "$PLAYER" = "spotify" ]; then
-            printf "%s%s %s - %s " "$SEP1" "$STATUS" "$ARTIST" "$TRACK"
-            printf "%0d:%02d" $((DURATION%3600/60)) $((DURATION%60))
-            printf "%s\n" "$SEP2"
-        else
-            printf "%s%s %s - %s " "$SEP1" "$STATUS" "$ARTIST" "$TRACK"
-            printf "%0d:%02d/" $((POSITION%3600/60)) $((POSITION%60))
-            printf "%0d:%02d" $((DURATION%3600/60)) $((DURATION%60))
-            printf "%s%s\n" "$SHUFFLE" "$SEP2"
-        fi
-    fi
-}
-
-refresh() {
-  # Alsa audio
-  STATUS=$(amixer sget Master | tail -n1 | sed -r "s/.*\[(.*)\]/\1/")
-  VOL=$(amixer get Master | tail -n1 | sed -r "s/.*\[(.*)%\].*/\1/")
-  volstat=""
-  if [ "$STATUS" = "off" ]; then
-    volstat="MUTE"
+BATT() {
+  CHARGE=$(cat /sys/class/power_supply/BAT0/capacity)
+  STATUS=$(cat /sys/class/power_supply/BAT0/status)
+  if [ "$STATUS" = "Charging" ]; then
+    FMTD=$(printf "🔌 %d%%" "$CHARGE")
   else
-    volstat="$(printf "VOL %s%%" "$VOL")"
+    FMTD=$(printf "🔋 %d%%" "$CHARGE")
   fi
-
-#  MEM=$(free -h | awk '/^Mem:/ {print $3 "/" $2}')
-#  CPU=$(top -bn1 | grep Cpu | awk '{print $2}')
-#  CPU_TEMP=$(sensors | awk '/^Tdie/ {print $2}')
-
-  out=""
-#  out="$out$(printf "MEM %s CPU %s (%s)" "$MEM" "$CPU" "$CPU_TEMP") | "
-  out="$out$volstat | "
-  out="$out$(printf "%s" "$(date "+%a, %B %d %H:%M:%S")")"
-  xsetroot -name "$out"
+  echo "$FMTD" > $__SENSORS_BATT
 }
 
+VOLU() {
+  printf "🔉 %d%%" "$(amixer sget Master | tail -n1 | sed -r "s/.*\[(.*)%\].*/\1/")"
+}
 
+TIME() {
+  printf "%s" "$(date)"
+}
 
-# -d for run daemonize, not exactly a daemon but still
-if [ X"$1" = X"-d" ]; then
-  echo "Daemonizing"
+SENSORS() {
+  MEM=$(free -h | grep Mem | awk '{print $3,"/", $2}')
+  CPU_TEMP=$(sensors | grep Package | awk '{print $4}')
+  CPU_USAG=$(top -bn1 | grep Cpu | awk '{print $2}')
+  FMTD=$(printf "MEM: %s CPU: %s%% (%s)" "$MEM" "$CPU_USAG" "$CPU_TEMP")
+  echo "$FMTD" > $__SENSORS_SYS
+}
+
+# Not used for performance and clutter reasons, but nice to have.
+# I will spin this off into its own little script
+NET() {
+  PRIVATE=$(nmcli -a | grep 'inet4 192' | awk '{print $2}')
+  PUBLIC=$(curl -s https://ipinfo.io/ip)
+  printf "INT: %s PUB: %s" "$PRIVATE" "$PUBLIC"
+}
+
+parallel_10s() {
   while true
   do
-    refresh
-    sleep 0.1
+    SENSORS &
+    BATT &
+    sleep 5
   done
-else
-  echo "Running once"
-  refresh
-  exit
-fi
+}
+
+parallel_10s &
+
+while true
+do
+  OUT=$(printf " %s | %s | %s | %s " "$(cat $__SENSORS_SYS)" "$(cat $__SENSORS_BATT)" "$(VOLU)" "$(TIME)")
+  xsetroot -name "$OUT"
+  sleep 0.2
+done
+

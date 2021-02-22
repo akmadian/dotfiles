@@ -3,32 +3,41 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'jiangmiao/auto-pairs'
 Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'KeitaNakamura/neodark.vim'
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug'] }
+Plug 'majutsushi/tagbar'
+Plug 'mattn/emmet-vim'
+Plug 'uiiaoo/java-syntax.vim'
+Plug 'sheerun/vim-polyglot'
 Plug 'yuezk/vim-js'
+Plug 'tpope/vim-commentary'
+Plug 'bronson/vim-trailing-whitespace'
+Plug 'mhinz/vim-signify'
+
+" Color Schemes
+Plug 'drewtempelmeyer/palenight.vim'
 call plug#end()
 
-colorscheme neodark
-
-filetype plugin on
+filetype plugin indent on
 syntax on
-set termguicolors
+if (has("termguicolors"))
+  set termguicolors
+endif
+set nocompatible
 set number relativenumber
+set hidden
 set list
 set listchars=eol:·
 set tabstop=2 expandtab shiftwidth=2 softtabstop=2
 set splitbelow splitright
+highlight link JavaIdentifier NONE
 
 autocmd BufLeave * silent! wall
 
-" If there is no open terminal buffer, open one
-if bufwinnr("term") > 0
-  tabe
-  term
-  file term
-  tabp
-endif
+"let g:neodark#background = '#202020'
+"let g:oceanic_for_polyglot=1
+colorscheme palenight
+
+" Due to some glyph rendering issues, I just rewrote this.
+let g:airline_section_z = '%p%% ☰ %l/%L ln : %v (%b)'
 
 " Get out of terminal mode easier
 tnoremap <Esc> <C-\><C-n>
@@ -52,11 +61,7 @@ imap <S-Left>   <Esc>v<Left>
 imap <S-Right>  <Esc>v<Right>
 
 " From luke smith, auto delete all trailing whitespace on save
-autocmd BufWritePre * %s/\s\+$//e
-
-" Auto Pairs
-" Map <CR> to insert a new indented line if cursor in pairs
-
-
+" autocmd BufWritePre * %s/\s\+$//e
 
 source ~/.config/nvim/cocnvim.vim
+
