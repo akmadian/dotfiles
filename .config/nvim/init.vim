@@ -11,6 +11,7 @@ Plug 'yuezk/vim-js'
 Plug 'tpope/vim-commentary'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'mhinz/vim-signify'
+Plug 'mhinz/vim-startify'
 
 " Color Schemes
 Plug 'drewtempelmeyer/palenight.vim'
@@ -38,6 +39,9 @@ colorscheme palenight
 
 " Due to some glyph rendering issues, I just rewrote this.
 let g:airline_section_z = '%p%% ☰ %l/%L ln : %v (%b)'
+
+let g:startify_change_to_vcs_root = 1
+"let g:startify_custom_header = startify#pad(split(system('cbonsai -p'), '\n'))
 
 " Get out of terminal mode easier
 tnoremap <Esc> <C-\><C-n>
