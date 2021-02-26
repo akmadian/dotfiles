@@ -27,12 +27,14 @@ alias bl="sudo bl" # Backlight
 alias cb="cbonsai -L 50 -s (random)" # For a pretty tree
 alias xcs="xclip -selection c"
 alias orm="bash orm" # No idea why, but this script really wants to be run with bash
+alias reddit="tuir --enable-media"
 
 # Navigation
 alias ..="cd .."
 alias .2="cd ../.."
 alias .3="cd ../../../"
 alias cdd="cd ~/Downloads"
+alias q="exit"
 
 function fish_prompt
     set_color normal
