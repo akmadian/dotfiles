@@ -2,9 +2,12 @@
 
 eval __SENSORS_SYS="/home/ari/.config/dwm/__SENSORS_SYS"
 eval __SENSORS_BATT="/home/ari/.config/dwm/__SENSORS_BATT"
+eval __TIME="/home/ari/.config/dwm/__MAIL"
 
 touch $__SENSORS_SYS
 touch $__SENSORS_BATT
+
+trap TEST 10 12
 
 BATT() {
   CHARGE=$(cat /sys/class/power_supply/BAT0/capacity)
@@ -17,8 +20,27 @@ BATT() {
   echo "$FMTD" > $__SENSORS_BATT
 }
 
+TEST() {
+  echo "TEST2" > ./__MAIL
+}
+
+MAIL() {
+  UNREAD_GMAIL=$(find ~/.local/share/mail/akmadian@gmail.com/INBOX/new -type f | wc -l)
+  UNREAD=$(find ~/.local/share/mail/ari@madian.co/INBOX/new -type f | wc -l)
+
+  FMTD=$(printf "📫 gm: %d co: %d" "$UNREAD_GMAIL" "$UNREAD")
+  echo "$FMTD" > $__MAIL
+}
+
 VOLU() {
-  printf "🔉 %d%%" "$(amixer sget Master | tail -n1 | sed -r "s/.*\[(.*)%\].*/\1/")"
+  STATUS=$(amixer sget Master | tail -n1 | sed -r "s/.*\[(.*)\]/\1/")
+  if [ "$STATUS" = "off" ]; then
+    OUT="MUTE"
+  else
+    OUT=$(amixer sget Master | tail -n1 | sed -r "s/.*\[(.*)%\].*/\1/")"%"
+  fi
+
+  printf "🔉 %s" "$OUT"
 }
 
 TIME() {
@@ -46,6 +68,7 @@ parallel_10s() {
   do
     SENSORS &
     BATT &
+    MAIL &
     sleep 5
   done
 }
@@ -54,7 +77,7 @@ parallel_10s &
 
 while true
 do
-  OUT=$(printf " %s | %s | %s | %s " "$(cat $__SENSORS_SYS)" "$(cat $__SENSORS_BATT)" "$(VOLU)" "$(TIME)")
+  OUT=$(printf " %s | %s | %s | %s | %s " "$(cat $__SENSORS_SYS)" "$(cat $__MAIL)" "$(cat $__SENSORS_BATT)" "$(VOLU)" "$(TIME)")
   xsetroot -name "$OUT"
   sleep 0.2
 done

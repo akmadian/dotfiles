@@ -10,6 +10,7 @@ alias gs="git status"
 alias gp="git push"
 alias ga="git add ."
 alias gc="git commit -m"
+alias orm="bash orm" # No idea why, but this script really wants to be run with bash
 
 # Package Managers
 alias ai="sudo apt install"
@@ -26,8 +27,6 @@ alias sleep="systemctl suspend"
 alias bl="sudo bl" # Backlight
 alias cb="cbonsai -L 50 -s (random)" # For a pretty tree
 alias xcs="xclip -selection c"
-alias orm="bash orm" # No idea why, but this script really wants to be run with bash
-alias reddit="tuir --enable-media"
 
 # Navigation
 alias ..="cd .."
@@ -35,6 +34,10 @@ alias .2="cd ../.."
 alias .3="cd ../../../"
 alias cdd="cd ~/Downloads"
 alias q="exit"
+
+# TUI Apps
+alias reddit="tuir --enable-media"
+alias email="neomutt"
 
 function fish_prompt
     set_color normal
