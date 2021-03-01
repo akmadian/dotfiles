@@ -11,7 +11,7 @@ Plug 'yuezk/vim-js'
 Plug 'tpope/vim-commentary'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'mhinz/vim-signify'
-Plug 'mhinz/vim-startify'
+Plug 'junegunn/goyo.vim'
 
 " Color Schemes
 Plug 'drewtempelmeyer/palenight.vim'
@@ -66,6 +66,9 @@ imap <S-Right>  <Esc>v<Right>
 
 " From luke smith, auto delete all trailing whitespace on save
 " autocmd BufWritePre * %s/\s\+$//e
+
+command Prose setlocal spell | Goyo
+command Code  colorscheme palenight | set nospell | Goyo!
 
 source ~/.config/nvim/cocnvim.vim
 
