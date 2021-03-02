@@ -1,25 +1,15 @@
-neofetch
-
-# TMUX
-# start if not started
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-  exec tmux -u
-fi
-
-precmd () {
-    tmux refresh-client -S # Update tmux status bar working directory
-}
-
 export ZSH=$HOME/.oh-my-zsh
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export PATH=$HOME/repos/cse374-21wi-monorepo/scripts:$PATH
+export PATH=$HOME/repos/printc-/printc:$PATH
 export GPG_TTY=$TTY
 export TMPDIR="/tmp"
+export TERM=st-256color
 
 # Themes: https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 # Favorites: amuse, crunch, linuxonly
-ZSH_THEME="custom"
+ZSH_THEME=custom
 
 CASE_SENSITIVE="true"
 DISABLE_AUTO_UPDATE="true"
@@ -31,7 +21,10 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(
+  git
+  zsh-autosuggestions
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -41,25 +34,39 @@ else
   export EDITOR='nvim'
 fi
 
-alias pi="sudo pacman -S"
-alias ll='ls -alF'
-alias cls='clear'
-alias um='umount'
-alias ..='cd ..'
-alias n='nvim'
-alias nv='nvim'
-alias gs='git status'
-alias gp='git push'
-alias ga='git add .'
-alias gc='git commit -m'
-alias ai='sudo apt install'
-alias agi='sudo apt-get install'
-alias xcs='xclip -selection c'
-alias ws='python -m http.server 10000'
+# Git
+alias gs="git status"
+alias gp="git push"
+alias ga="git add ."
+alias gc="git commit -m"
+alias orm="bash orm" # No idea why, but this script really wants to be run with bash
 
-nas-mount() {
-  sudo mkdir -p ~/descartes/$1
-  sudo mount 192.168.0.6:/nfs/$1 ~/descartes/$1
-}
+# Package Managers
+alias ai="sudo apt install"
+alias agi="sudo apt-get install"
+alias pi="sudo pacman -S"
+alias yi="yay -S"
+
+# General
+alias cls="clear"
+alias ll="ls -alhF"
+alias unpacktargz="tar xvzf"
+alias ssn="sudo shutdown now"
+alias sleep="systemctl suspend"
+alias bl="sudo bl" # Backlight
+alias cb="cbonsai -L 50 -s (random)" # For a pretty tree
+alias xcs="xclip -selection c"
+
+# Navigation
+alias ..="cd .."
+alias .2="cd ../.."
+alias .3="cd ../../../"
+alias cdd="cd ~/Downloads"
+alias q="exit"
+
+# TUI Apps
+alias reddit="tuir --enable-media"
+alias email="neomutt"
+alias emailpull="mbsync -a"
 
 PATH="$HOME/.local/bin:$PATH"

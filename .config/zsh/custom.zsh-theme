@@ -24,42 +24,28 @@ if [ "$TERM" = "linux" ]; then
     c9=$(printf "\033[34m")
 fi
 
-zstyle ':vcs_info:*' actionformats \
-    '%{$c8%}(%f%s)%{$c7%}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
-    
-zstyle ':vcs_info:*' formats \
-    "%{$c8%}%s%{$c7%}:%{$c7%}(%{$c9%}%b%{$c7%})%f "
-    
+zstyle ':vcs_info:*' actionformats '%{$c8%}(%f%s)%{$c7%}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
+zstyle ':vcs_info:*' formats "%{$c8%}%s%{$c7%}:%{$c7%}(%{$c9%}%b%{$c7%})%f "
 zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
 
 zstyle ':vcs_info:*' enable git
 
+git_branch=$(git branch 2>/dev/null | sed -n '/\* /s///p')
+
 add-zsh-hook precmd prompt_jnrowe_precmd
+
+prompt_pwd() {
+    echo ${$(pwd)/\/home\/ari/"~"}
+}
 
 prompt_jnrowe_precmd () {
     vcs_info
+    p="$(whoami)@$(hostname) $(prompt_pwd)"
 
-    if [ "${vcs_info_msg_0_}" = "" ]; then
-    
-        dir_status="%{$c1%}%n%{$c4%}@%{$c2%}%m%{$c0%}:%{$c3%}%0/%{$c6%}->%{$c4%} %{$c0%}(%{$c5%}%?%{$c0%})"
-        
-        PROMPT='${dir_status} ${ret_status}%{$reset_color%}$ '
-        
-    elif [[ $(git diff --cached --name-status 2>/dev/null ) != "" ]]; then
-    
-        dir_status="%{$c1%}%n%{$c4%}@%{$c2%}%m%{$c0%}:%{$c3%}%0/%{$c6%}->%{$c4%} %{$c0%}(%{$c5%}%?%{$c0%})"
-        
-        PROMPT='${dir_status} ${vcs_info_msg_0_}%{$reset_color%}$ '
-
-    elif [[ $(git diff --name-status 2>/dev/null ) != "" ]]; then
-    
-        dir_status="%{$c1%}%n%{$c4%}@%{$c2%}%m%{$c0%}:%{$c3%}%0/%{$c6%}->%{$c4%} %{$c0%}(%{$c5%}%?%{$c0%})"
-        
-        PROMPT='${dir_status}%{$reset_color%}%{$c9%}·>%{$c0%} '
-        
-    else
-        dir_status="%{$c1%}%n%{$c4%}@%{$c2%}%m%{$c0%}:%{$c3%}%0/%{$c6%}->%{$c4%} %{$c0%}(%{$c5%}%?%{$c0%})"
-        
-        PROMPT='${dir_status} ${vcs_info_msg_0_}%{$reset_color%}$ '
+    if [ "$git_branch" != "" ]; then
+        p="${p} git:(${git_branch}) "
     fi
+    p="${p} -> "
+
+    PROMPT=$p
 }
