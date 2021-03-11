@@ -9,7 +9,6 @@ set header_cache = /home/ari/.cache/mutt-wizard/akmadian@gmail.com/headers
 set message_cachedir = /home/ari/.cache/mutt-wizard/akmadian@gmail.com/bodies
 set mbox_type = Maildir
 
-
 bind index,pager gg noop
 bind index,pager g noop
 bind index,pager M noop
@@ -21,7 +20,7 @@ unset signature
 unmacro index o
 macro index o "<shell-escape>mw -y akmadian@gmail.com<enter>" "run mbsync to sync akmadian@gmail.com"
 
-mailboxes "=Dev Stuff/AlexaComp" "=Documentation/Back Stuff" "=Documentation/Computer Related" "=Documentation/Customer Service" "=Documentation/Doctors/Andrea Valdez" "=Documentation/Doctors/Jessica" "=Documentation/Receipts" "=Documentation/School Related" "=Documentation/Taxes" "=Documentation/Tea" "=Documentation/_TRAVEL_/Europe Trip 2018" "=Documentation/_TRAVEL_/New York 2020" "=INBOX" "=Jobs/2021_Internship_Challenges/Complete" "=Jobs/ARC Enrichment Program" "=Jobs/Application Reciepts" "=Jobs/Business Stuff" "=Jobs/CC" "=Jobs/GSoC 2019" "=Jobs/Internships" "=Jobs/Underrep Freelancing" "=Papers/Historic Papers" "=Remember/Dad Travel Emails" "=Remember/Personal" "=Remember/[Imap]/Sent" "=School/Fall Q2018" "=School/Hour of Code" "=School/UW" "=[Gmail]/All Mail" "=[Gmail]/Drafts" "=[Gmail]/Important" "=[Gmail]/Sent Mail" "=[Gmail]/Spam" "=[Gmail]/Starred" "=[Gmail]/Trash"
+mailboxes "=INBOX" "=[Gmail]/All Mail" "=[Gmail]/Drafts" "=[Gmail]/Sent Mail" "=[Gmail]/Spam" "=[Gmail]/Trash"
 macro index,pager gi "<change-folder>=INBOX<enter>" "go to inbox"
 macro index,pager Mi ";<save-message>=INBOX<enter>" "move mail to inbox"
 macro index,pager Ci ";<copy-message>=INBOX<enter>" "copy mail to inbox"
