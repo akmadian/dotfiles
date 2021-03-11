@@ -1,35 +1,47 @@
 #!/usr/bin/sh
+# Unread mail counts are handled by my mutt_daemon script, this one
+#   just expects the info to be in the right place
 
 eval __SENSORS_SYS="/home/ari/.config/dwm/__SENSORS_SYS"
 eval __SENSORS_BATT="/home/ari/.config/dwm/__SENSORS_BATT"
-eval __TIME="/home/ari/.config/dwm/__MAIL"
+eval __MAIL="/home/ari/.config/dwm/__MAIL"
+eval __NET="/home/ari/.config/dwm/__NET"
 
 touch $__SENSORS_SYS
 touch $__SENSORS_BATT
+touch $__NET
 
-trap TEST 10 12
+HOSTNAME=$(cat /etc/hostname)
+
+#trap TEST 10 12
+
+CMUS() {
+  if ps -C cmus > /dev/null; then
+    artist=`cmus-remote -Q |
+    	grep --text '^tag artist' |
+    	sed '/^tag artistsort/d' |
+    	awk '{gsub("tag artist ", "");print}'`
+    title=`cmus-remote -Q  |
+    	grep --text '^tag title' |
+    	sed -e 's/tag title //' |
+    	awk '{gsub("tag title ", "");print}'`
+
+    pos=`cmus-remote -Q | grep 'position' | awk '{print $2}'`
+    dur=`cmus-remote -Q | grep 'duration' | awk '{print $2}'`
+
+    echo "Now Playing: $artist - $title - $(date -d@$pos -u +%H:%M:%S)/$(date -d@$dur -u +%H:%M:%S) |"; else echo "";
+  fi
+}
 
 BATT() {
   CHARGE=$(cat /sys/class/power_supply/BAT0/capacity)
   STATUS=$(cat /sys/class/power_supply/BAT0/status)
   if [ "$STATUS" = "Charging" ]; then
-    FMTD=$(printf "🔌 %d%%" "$CHARGE")
+    FMTD=$(printf "🔌 %d% |" "$CHARGE")
   else
-    FMTD=$(printf "🔋 %d%%" "$CHARGE")
+    FMTD=$(printf "🔋 %d% |" "$CHARGE")
   fi
   echo "$FMTD" > $__SENSORS_BATT
-}
-
-TEST() {
-  echo "TEST2" > ./__MAIL
-}
-
-MAIL() {
-  UNREAD_GMAIL=$(find ~/.local/share/mail/akmadian@gmail.com/INBOX/new -type f | wc -l)
-  UNREAD=$(find ~/.local/share/mail/ari@madian.co/INBOX/new -type f | wc -l)
-
-  FMTD=$(printf "📫 gm: %d co: %d" "$UNREAD_GMAIL" "$UNREAD")
-  echo "$FMTD" > $__MAIL
 }
 
 VOLU() {
@@ -49,9 +61,19 @@ TIME() {
 
 SENSORS() {
   MEM=$(free -h | grep Mem | awk '{print $3,"/", $2}')
-  CPU_TEMP=$(sensors | grep Package | awk '{print $4}')
+
+  if [ "$HOSTNAME" != "byzantium" ]; then
+    CPU_TEMP=$(sensors | grep Package | awk '{print $4}')
+  else
+    CPU_TEMP=$(sensors | grep Tdie | awk '{print $2 $3}')
+  fi
+
+  if [ "$HOSTNAME" = "byzantium" ]; then
+    GPU_TEMP=$(sensors | grep temp1 | awk '{print $2 $3}')
+  fi
+
   CPU_USAG=$(top -bn1 | grep Cpu | awk '{print $2}')
-  FMTD=$(printf "MEM: %s CPU: %s%% (%s)" "$MEM" "$CPU_USAG" "$CPU_TEMP")
+  FMTD=$(printf "MEM: %s   CPU: %s%% (%s)   GPU: %s" "$MEM" "$CPU_USAG" "$CPU_TEMP" "$GPU_TEMP")
   echo "$FMTD" > $__SENSORS_SYS
 }
 
@@ -60,25 +82,29 @@ SENSORS() {
 NET() {
   PRIVATE=$(nmcli -a | grep 'inet4 192' | awk '{print $2}')
   PUBLIC=$(curl -s https://ipinfo.io/ip)
-  printf "INT: %s PUB: %s" "$PRIVATE" "$PUBLIC"
+  FMTD=$(printf "PRI: %s   PUB: %s" "$PRIVATE" "$PUBLIC")
+  echo "$FMTD" > $__NET
 }
 
 parallel_10s() {
   while true
   do
     SENSORS &
-    BATT &
-    MAIL &
+    if [ "$(cat /etc/hostname)" != "byzantium" ]; then
+      BATT &
+    fi
     sleep 5
   done
 }
 
 parallel_10s &
+NET &
 
 while true
 do
-  OUT=$(printf " %s | %s | %s | %s | %s " "$(cat $__SENSORS_SYS)" "$(cat $__MAIL)" "$(cat $__SENSORS_BATT)" "$(VOLU)" "$(TIME)")
-  xsetroot -name "$OUT"
+  TOPBAR=$(printf " %s %s %s | %s " "$(CMUS)" "$(cat $__SENSORS_BATT)" "$(VOLU)" "$(TIME)")
+  BOTBAR=$(printf " %s | %s | %s | %s " "$(cat $__SENSORS_SYS)" "$(cat $__MAIL)" "$(cat $__NET)" "$(uptime -p)")
+  xsetroot -name "$TOPBAR;$BOTBAR"
   sleep 0.2
 done
 
