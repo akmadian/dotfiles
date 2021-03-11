@@ -1,4 +1,11 @@
 *
 
-!.config/dwm
+!.config/dwm/*
+!.config/nvim/*
+!.config/fish/*
+!.local/bin/*
+
+!.xinitrc
+!.gitconfig
+
 .config/dwm/__*
