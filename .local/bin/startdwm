@@ -1,0 +1,4 @@
+while true; do
+  killall statusbar.sh
+  dwm > /home/ari/.config/dwm/dwm.log 2> /home/ari/.config/dwm/dwmerr.log
+done

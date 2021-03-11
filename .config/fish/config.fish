@@ -31,6 +31,7 @@ alias ll="exa -al --color=always --group-directories-first --header"
 alias tree="exa --tree --level=2" 
 
 alias grep='grep --color=auto'
+alias cat='bat'
 
 # Git Bare Repo Dotfiles Setup
 alias df="/usr/bin/git --git-dir=$HOME/repos/dotfiles --work-tree=$HOME"
@@ -53,8 +54,8 @@ alias xcs="xclip -selection c"
 alias yt="youtube-dl --add-metadata -i"
 alias yta="yt -x -f bestaudio/best"
 
-alias fishconfig='nvim ~/dotfiles/.config/fish/config.fish'
-alias nvimconfig='nvim ~/dotfiles/.config/nvim/init.vim'
+alias fishconfig='nvim ~/.config/fish/config.fish'
+alias nvimconfig='nvim ~/.config/nvim/init.vim'
 
 # Navigation
 alias ..="cd .."
