@@ -3,9 +3,10 @@
 
 set -Ua fish_user_paths $HOME/cs/CSE-374/scripts
 set -Ua fish_user_paths $HOME/.local/bin
-set -x GPG_TTY $TTY
+set -Ux GPG_TTY (tty)
 set -x TMPDIR "/tmp"
-set -U EDITOR nvim
+set -Ux EDITOR nvim
+set -Ux BROWSER brave
 
 set fish_color_command white
 
@@ -25,13 +26,19 @@ alias yi="yay -S"
 
 # General
 alias cls="clear"
-alias ll="ls -lahF"
+alias ll="ls -lhAF"
 alias unpacktargz="tar xvzf"
 alias ssn="sudo shutdown now"
 alias sleep="systemctl suspend"
 alias bl="sudo bl" # Backlight
 alias cb="cbonsai -L 50 -s (random)" # For a pretty tree
 alias xcs="xclip -selection c"
+alias cleantex="rm *aux *bcf *bbl *blg *fdb_latexmk *fls *lof *log *out *run.xml *synctex.gz *toc"
+alias yt="youtube-dl --add-metadata -i"
+alias yta="yt -x -f bestaudio/best"
+
+alias fishconfig='nvim ~/dotfiles/.config/fish/config.fish'
+alias nvimconfig='nvim ~/dotfiles/.config/nvim/init.vim'
 
 # Navigation
 alias ..="cd .."
@@ -50,7 +57,7 @@ function fish_prompt
 
     set_color C9B091; echo -n (whoami)
     set_color A6A780; echo -n '@'
-    set_color D3A080; echo -n (hostname)
+    set_color D3A080; echo -n (cat /etc/hostname)
     set_color B1B666; echo -n ' '(prompt_pwd)' '
     if [ "$git_branch" != "" ]
         set_color A45479; echo -n 'git'
