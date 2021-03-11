@@ -2,16 +2,17 @@ call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'vim-airline/vim-airline'
-"Plug 'majutsushi/tagbar'
-"Plug 'mattn/emmet-vim'
+Plug 'tpope/vim-commentary'
+Plug 'junegunn/goyo.vim'
+Plug 'townk/vim-autoclose'
+Plug 'tpope/vim-surround'
+"Plug 'chrisbra/Colorizer'
+
+" Syntax Highlighting/ Lang Support
 Plug 'uiiaoo/java-syntax.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'yuezk/vim-js'
-Plug 'tpope/vim-commentary'
-Plug 'junegunn/goyo.vim'
 Plug 'lervag/vimtex'
-Plug 'chrisbra/Colorizer'
-Plug 'townk/vim-autoclose'
 
 " Color Schemes
 Plug 'drewtempelmeyer/palenight.vim'
@@ -19,9 +20,11 @@ call plug#end()
 
 filetype plugin indent on
 syntax on
+
 if (has("termguicolors"))
   set termguicolors
 endif
+
 set nocompatible
 set number relativenumber
 set hidden
@@ -66,34 +69,27 @@ map <C-l> <C-w>l
 
 " Remap esc
 imap jj <Esc>
+imap jk <Esc>
+imap kj <Esc>
 
 " Tab navigation
-map <C-Right> :tabnext<CR>
-map <C-Left> :tabprevious<CR>
+map <S-Right> :tabnext<CR>
+map <S-Left> :tabprevious<CR>
 
 " Use ctrl-c to comment out lines
-map <C-c> gcc
+map <C-c> gcc 
 
-" Close coc.nvim suggestion with ff
-"imap ff <C-o>:call coc#float#close_all()<CR>
+" Replace all
+nnoremap S :%s//g<Left><Left>
 
+" Clean up tex build files whenever a .tex file is closed - From Luke Smith's dotfiles
+autocmd VimLeave *.tex !texclear %
 
-" Visual copy and pasting
-nmap <S-Up>     v<Up>
-nmap <S-Down>   v<Down>
-nmap <S-Left>   v<Left>
-nmap <S-Right>  v<Right>
-vmap <S-Up>     <Up>
-vmap <S-Down>   <Down>
-vmap <S-Left>   <Left>
-vmap <S-Right>  <Right>
-imap <S-Up>     <Esc>v<Up>
-imap <S-Down>   <Esc>v<Down>
-imap <S-Left>   <Esc>v<Left>
-imap <S-Right>  <Esc>v<Right>
+" Save file as sudo on files that require root
+cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 
-" From luke smith, auto delete all trailing whitespace on save
-" autocmd BufWritePre * %s/\s\+$//e
+" Disable automatic commenting on newline
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 command! Prose setlocal spell | Goyo
 command! Code  colorscheme palenight | set nospell | Goyo!
