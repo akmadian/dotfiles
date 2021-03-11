@@ -3,9 +3,10 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'vim-airline/vim-airline'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
 Plug 'junegunn/goyo.vim'
 Plug 'townk/vim-autoclose'
-Plug 'tpope/vim-surround'
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 "Plug 'chrisbra/Colorizer'
 
 " Syntax Highlighting/ Lang Support
@@ -43,10 +44,9 @@ colorscheme palenight
 
 " Due to some glyph rendering issues, I just rewrote this.
 let g:airline_section_z = '%p%% ☰ %l/%L ln : %v (%b)'
-
 let g:startify_change_to_vcs_root = 1
 let g:vimtex_view_method = 'zathura'
-"let g:startify_custom_header = startify#pad(split(system('cbonsai -p'), '\n'))
+" https://shapeshed.com/vim-statuslines/ - For custom status line project
 
 " Testing indenting and deindenting without moving cursor
 inoremap <tab> <C-t>
@@ -68,7 +68,6 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l
 
 " Remap esc
-imap jj <Esc>
 imap jk <Esc>
 imap kj <Esc>
 
@@ -77,7 +76,7 @@ map <S-Right> :tabnext<CR>
 map <S-Left> :tabprevious<CR>
 
 " Use ctrl-c to comment out lines
-map <C-c> gcc 
+map <C-c> gcc
 
 " Replace all
 nnoremap S :%s//g<Left><Left>

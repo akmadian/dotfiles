@@ -7,33 +7,42 @@ set -Ux GPG_TTY (tty)
 set -x TMPDIR "/tmp"
 set -Ux EDITOR nvim
 set -Ux BROWSER brave
+set -Ux MANPAGER "nvim -c 'set ft=man'"
 
 set fish_color_command white
 
 # Git
 alias gs="git status"
 alias gp="git push"
-alias ga="git add ."
+alias ga="git add"
+alias addall="git add ."
 alias gc="git commit -m"
 alias orm="bash orm" # No idea why, but this script really wants to be run with bash
 
 # Package Managers
-alias ai="sudo apt install"
-alias agi="sudo apt-get install"
-
 alias pi="sudo pacman -S"
+alias psyu="sudo pacman -Syyu"
+alias pclean="sudo pacman -Rns (pacman -Qtdq)"
 alias yi="yay -S"
+alias pr="sudo pacman -R"
+
+# Change ls to exa
+alias ll="exa -al --color=always --group-directories-first --header"
+alias tree="exa --tree --level=2" 
+
+alias grep='grep --color=auto'
+
+alias config="/usr/bin/git --git-dir=$HOME/repos/dotfiles --work-tree=$HOME"
 
 # General
 alias cls="clear"
-alias ll="ls -lhAF"
-alias unpacktargz="tar xvzf"
 alias ssn="sudo shutdown now"
+alias srn="sudo reboot"
 alias sleep="systemctl suspend"
 alias bl="sudo bl" # Backlight
 alias cb="cbonsai -L 50 -s (random)" # For a pretty tree
 alias xcs="xclip -selection c"
-alias cleantex="rm *aux *bcf *bbl *blg *fdb_latexmk *fls *lof *log *out *run.xml *synctex.gz *toc"
+
 alias yt="youtube-dl --add-metadata -i"
 alias yta="yt -x -f bestaudio/best"
 
