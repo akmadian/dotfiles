@@ -32,7 +32,14 @@ alias tree="exa --tree --level=2"
 
 alias grep='grep --color=auto'
 
-alias config="/usr/bin/git --git-dir=$HOME/repos/dotfiles --work-tree=$HOME"
+# Git Bare Repo Dotfiles Setup
+alias df="/usr/bin/git --git-dir=$HOME/repos/dotfiles --work-tree=$HOME"
+alias dotfiles="df"
+alias dfs="df status"
+alias dfa="df add"
+alias dfc="df commit -m"
+alias dfp="df push"
+alias dfaa="df add ."
 
 # General
 alias cls="clear"
@@ -76,4 +83,3 @@ function fish_prompt
     end
     set_color normal; echo -n '-> '
 end
-

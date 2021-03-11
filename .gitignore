@@ -1,1 +1,12 @@
-nohup.out
+*
+
+!.config/dwm/*
+!.config/nvim/*
+!.config/fish/*
+!.local/bin/
+!.local/bin/*
+
+!.xinitrc
+!.gitconfig
+
+.config/dwm/__*
