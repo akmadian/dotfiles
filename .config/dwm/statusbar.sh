@@ -29,7 +29,7 @@ CMUS() {
     pos=`cmus-remote -Q | grep 'position' | awk '{print $2}'`
     dur=`cmus-remote -Q | grep 'duration' | awk '{print $2}'`
 
-    echo "Now Playing: $artist - $title - $(date -d@$pos -u +%H:%M:%S)/$(date -d@$dur -u +%H:%M:%S) |"; else echo "";
+    echo "Now Playing: $artist - $title - $(date -d@$pos -u +%H:%M:%S)/$(date -d@$dur -u +%H:%M:%S) | "; else echo "";
   fi
 }
 
@@ -37,9 +37,9 @@ BATT() {
   CHARGE=$(cat /sys/class/power_supply/BAT0/capacity)
   STATUS=$(cat /sys/class/power_supply/BAT0/status)
   if [ "$STATUS" = "Charging" ]; then
-    FMTD=$(printf "🔌 %d% |" "$CHARGE")
+    FMTD=$(printf "🔌 %d%  " "$CHARGE")
   else
-    FMTD=$(printf "🔋 %d% |" "$CHARGE")
+    FMTD=$(printf "🔋 %d%  " "$CHARGE")
   fi
   echo "$FMTD" > $__SENSORS_BATT
 }
@@ -72,8 +72,11 @@ SENSORS() {
     GPU_TEMP=$(sensors | grep temp1 | awk '{print $2 $3}')
   fi
 
+  HDU=$(sh -c "df -h" | grep "/dev/sdc3" | awk '{print $3,"/",$4, "("$5")"}') # Home disk usage
+  NDU=$(sh -c "df -h" | grep "nas" | awk '{print $3,"/",$4, "("$5")"}')
+
   CPU_USAG=$(top -bn1 | grep Cpu | awk '{print $2}')
-  FMTD=$(printf "MEM: %s   CPU: %s%% (%s)   GPU: %s" "$MEM" "$CPU_USAG" "$CPU_TEMP" "$GPU_TEMP")
+  FMTD=$(printf "MEM: %s   CPU: %s%% (%s)   GPU: %s | LOC: %s   NAS: %s" "$MEM" "$CPU_USAG" "$CPU_TEMP" "$GPU_TEMP" "$HDU" "$NDU")
   echo "$FMTD" > $__SENSORS_SYS
 }
 
@@ -102,7 +105,7 @@ NET &
 
 while true
 do
-  TOPBAR=$(printf " %s %s %s | %s " "$(CMUS)" "$(cat $__SENSORS_BATT)" "$(VOLU)" "$(TIME)")
+  TOPBAR=$(printf " %s%s%s | %s " "$(CMUS)" "$(cat $__SENSORS_BATT)" "$(VOLU)" "$(TIME)")
   BOTBAR=$(printf " %s | %s | %s | %s " "$(cat $__SENSORS_SYS)" "$(cat $__MAIL)" "$(cat $__NET)" "$(uptime -p)")
   xsetroot -name "$TOPBAR;$BOTBAR"
   sleep 0.2

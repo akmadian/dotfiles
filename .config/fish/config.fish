@@ -15,7 +15,8 @@ set fish_color_command white
 alias gs="git status"
 alias gp="git push"
 alias ga="git add"
-alias addall="git add ."
+alias gaa="git add ."
+alias gd="git diff"
 alias gc="git commit -m"
 alias orm="bash orm" # No idea why, but this script really wants to be run with bash
 
@@ -65,8 +66,6 @@ abbr -a -- - 'cd -' # Cause alias - doesn't work
 
 # TUI Apps
 alias reddit="tuir --enable-media"
-alias email="neomutt"
-alias emailpull="mbsync -a"
 
 function fish_prompt
     set_color normal
