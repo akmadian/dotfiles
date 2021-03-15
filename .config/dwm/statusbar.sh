@@ -9,27 +9,21 @@ eval __NET="/home/ari/.config/dwm/__NET"
 
 touch $__SENSORS_SYS
 touch $__SENSORS_BATT
+touch $__MAIL
 touch $__NET
 
 HOSTNAME=$(cat /etc/hostname)
 
-#trap TEST 10 12
-
-CMUS() {
-  if ps -C cmus > /dev/null; then
-    artist=`cmus-remote -Q |
-    	grep --text '^tag artist' |
-    	sed '/^tag artistsort/d' |
-    	awk '{gsub("tag artist ", "");print}'`
-    title=`cmus-remote -Q  |
-    	grep --text '^tag title' |
-    	sed -e 's/tag title //' |
-    	awk '{gsub("tag title ", "");print}'`
-
-    pos=`cmus-remote -Q | grep 'position' | awk '{print $2}'`
-    dur=`cmus-remote -Q | grep 'duration' | awk '{print $2}'`
-
-    echo "Now Playing: $artist - $title - $(date -d@$pos -u +%H:%M:%S)/$(date -d@$dur -u +%H:%M:%S) | "; else echo "";
+SPOTIFY() {
+  if [ "$(playerctl -l | grep spotify)" = "spotify" ]; then
+    ARTIST=$(playerctl -p spotify metadata artist)
+    SONG=$(playerctl -p spotify metadata title)
+    if [ "$(playerctl -p spotify status)" = "Playing" ]; then
+      ICON="▶"
+    else
+      ICON=""
+    fi
+    printf "%s %s: %s | " "$ICON" "$ARTIST" "$SONG"
   fi
 }
 
@@ -74,6 +68,9 @@ SENSORS() {
 
   HDU=$(sh -c "df -h" | grep "/dev/sdc3" | awk '{print $3,"/",$4, "("$5")"}') # Home disk usage
   NDU=$(sh -c "df -h" | grep "nas" | awk '{print $3,"/",$4, "("$5")"}')
+  if [ "$NDU" = "" ]; then
+    NDU="Not Mounted"
+  fi
 
   CPU_USAG=$(top -bn1 | grep Cpu | awk '{print $2}')
   FMTD=$(printf "MEM: %s   CPU: %s%% (%s)   GPU: %s | LOC: %s   NAS: %s" "$MEM" "$CPU_USAG" "$CPU_TEMP" "$GPU_TEMP" "$HDU" "$NDU")
@@ -105,7 +102,7 @@ NET &
 
 while true
 do
-  TOPBAR=$(printf " %s%s%s | %s " "$(CMUS)" "$(cat $__SENSORS_BATT)" "$(VOLU)" "$(TIME)")
+  TOPBAR=$(printf " %s%s%s | %s " "$(SPOTIFY)" "$(cat $__SENSORS_BATT)" "$(VOLU)" "$(TIME)")
   BOTBAR=$(printf " %s | %s | %s | %s " "$(cat $__SENSORS_SYS)" "$(cat $__MAIL)" "$(cat $__NET)" "$(uptime -p)")
   xsetroot -name "$TOPBAR;$BOTBAR"
   sleep 0.2
