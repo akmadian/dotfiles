@@ -15,14 +15,17 @@ Plug 'chrisbra/Colorizer', { 'on': 'ColorHighlight' }
 " Plug 'andrewradev/splitjoin.vim'
 
 " Syntax Highlighting/ Lang Support
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
 " Only load language support packs when needed to cut startup time
-Plug 'uiiaoo/java-syntax.vim', { 'for': 'java' }
-Plug 'yuezk/vim-js', { 'for': 'javascript' }
-Plug 'lervag/vimtex', { 'for': 'tex' }
+" Plug 'uiiaoo/java-syntax.vim', { 'for': 'java' }
+" Plug 'yuezk/vim-js', { 'for': 'javascript' }
+" Plug 'lervag/vimtex', { 'for': 'tex' }
 
 " Color Schemes
 Plug 'drewtempelmeyer/palenight.vim'
+" Plug 'KeitaNakamura/neodark.vim'
+" Plug 'embark-theme/vim', { 'as': 'embark' }
+" Plug 'aereal/vim-colors-japanesque'
 call plug#end()
 
 filetype plugin indent on
@@ -52,9 +55,18 @@ autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
-"let g:neodark#background = '#202020'
-"let g:oceanic_for_polyglot=1
+" COLOR SCHEMES
+" let g:neodark#background = '#202020'
+" let g:neodark#background = '#251621'
+" colorscheme neodark
+
 colorscheme palenight
+
+let g:vimtex_view_method = 'zathura'
+let g:vimtex_toc_config = {
+  \'split_pos' : ':vert :botright',
+  \'split_width': 50,
+  \}
 
 " Due to some glyph rendering issues, I just rewrote this.
 let g:airline_section_z = '%p%% ☰ %l/%L ln : %v (%b)'
@@ -95,6 +107,7 @@ nnoremap Ra :%s//g<Left><Left>
 
 " Clean up tex build files whenever a .tex file is closed - From Luke Smith's dotfiles
 autocmd VimLeave *.tex !texclear %
+nmap tc VimtexTocOpen
 
 " Save file as sudo on files that require root
 cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!

@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/bin/dash
 # Unread mail counts are handled by my mutt_daemon script, this one
 #   just expects the info to be in the right place
 
@@ -15,15 +15,16 @@ touch $__NET
 HOSTNAME=$(cat /etc/hostname)
 
 SPOTIFY() {
-  if [ "$(playerctl -l | grep spotify)" = "spotify" ]; then
-    ARTIST=$(playerctl -p spotify metadata artist)
-    SONG=$(playerctl -p spotify metadata title)
-    if [ "$(playerctl -p spotify status)" = "Playing" ]; then
+  if [ "$(playerctl -l | grep spotifyd)" = "spotifyd" ]; then
+    ARTIST=$(playerctl -p spotifyd metadata artist)
+    SONG=$(playerctl -p spotifyd metadata title)
+    if [ "$(playerctl -p spotifyd status)" = "Playing" ]; then
       ICON="▶"
     else
       ICON=""
     fi
-    printf "%s %s: %s | " "$ICON" "$ARTIST" "$SONG"
+
+    printf "%s %s: %s |" "$ICON" "$ARTIST" "$SONG"
   fi
 }
 
@@ -82,7 +83,8 @@ SENSORS() {
 NET() {
   PRIVATE=$(nmcli -a | grep 'inet4 192' | awk '{print $2}')
   PUBLIC=$(curl -s https://ipinfo.io/ip)
-  FMTD=$(printf "PRI: %s   PUB: %s" "$PRIVATE" "$PUBLIC")
+  SPEED=$(speedtest-cli --bytes | egrep "Download|Upload" | paste -sd " | ")
+  FMTD=$(printf "PRI: %s   PUB: %s | %s" "$PRIVATE" "$PUBLIC" "$SPEED")
   echo "$FMTD" > $__NET
 }
 
@@ -102,7 +104,7 @@ NET &
 
 while true
 do
-  TOPBAR=$(printf " %s%s%s | %s " "$(SPOTIFY)" "$(cat $__SENSORS_BATT)" "$(VOLU)" "$(TIME)")
+  TOPBAR=$(printf " %s%s | %s " "$(cat $__SENSORS_BATT)" "$(VOLU)" "$(TIME)")
   BOTBAR=$(printf " %s | %s | %s | %s " "$(cat $__SENSORS_SYS)" "$(cat $__MAIL)" "$(cat $__NET)" "$(uptime -p)")
   xsetroot -name "$TOPBAR;$BOTBAR"
   sleep 0.2

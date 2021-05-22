@@ -7,9 +7,11 @@ set -Ux GPG_TTY (tty)
 set -x TMPDIR "/tmp"
 set -Ux EDITOR nvim
 set -Ux BROWSER brave
-set -Ux MANPAGER "nvim -c 'set ft=man'"
+# set -Ux MANPAGER "nvim -c 'set ft=man'"
+set -Ux MANPAGER "bat"
 
 set fish_color_command white
+set fish_greeting
 
 # Git
 alias gs="git status"
@@ -29,7 +31,7 @@ alias pr="sudo pacman -R"
 
 # Change ls to exa
 alias ll="exa -al --color=always --group-directories-first --header"
-alias tree="exa --tree --level=2" 
+alias tree="exa --tree --level=2"
 
 alias grep='grep --color=auto'
 alias cat='bat'
@@ -64,22 +66,31 @@ alias cdd="cd ~/Downloads"
 alias q="exit"
 abbr -a -- - 'cd -' # Cause alias - doesn't work
 
-# TUI Apps
 alias reddit="tuir --enable-media"
+alias openrgb="sudo ~/Downloads/OpenRGB_0.5_x86_64_88464d1.AppImage"
+alias weather="curl wttr.in"
+alias cheat="curl cheat.sh/$1"
+alias s="startx"
+
+# Makes NextCloud re-index files
+alias nci="ssh www-data@nc.madian.co 'php /var/www/nc.madian.co/occ files:scan --all'"
+
+# Recursively removes x perm from all files in working dir, ignores dirs
+alias deexec="find . -type f -print0 | xargs -0 chmod -x"
+
+# neofetch --disable Kernel Shell Resolution Theme Icons --off
 
 function fish_prompt
     set_color normal
     set git_branch (git branch 2>/dev/null | sed -n '/\* /s///p')
 
-    set_color C9B091; echo -n (whoami)
-    set_color A6A780; echo -n '@'
-    set_color D3A080; echo -n (cat /etc/hostname)
-    set_color B1B666; echo -n ' '(prompt_pwd)' '
+    # set_color C9B091; echo -n (whoami)
+    set_color 60697B; echo -n ' '(pwd | string replace "/home/ari" "~")' '
     if [ "$git_branch" != "" ]
-        set_color A45479; echo -n 'git'
+        set_color C9B091; echo -n 'git'
         set_color CAD89A; echo -n ':('
-        set_color A45479; echo -n $git_branch
+        set_color C9B091; echo -n $git_branch
         set_color CAD89A; echo -n ') '
     end
-    set_color normal; echo -n '-> '
+    set_color normal; echo -n '$ '
 end
