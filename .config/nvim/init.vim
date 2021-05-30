@@ -1,31 +1,24 @@
 call plug#begin('~/.vim/plugged')
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-Plug 'vim-airline/vim-airline'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
-Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
-Plug 'townk/vim-autoclose'
-Plug 'alvan/vim-closetag', { 'for': ['html', 'jsx', 'js', 'vue'] }
-Plug 'mg979/vim-visual-multi', {'branch': 'master'}
-Plug 'chrisbra/Colorizer', { 'on': 'ColorHighlight' }
+  Plug 'tpope/vim-commentary'
+  Plug 'tpope/vim-surround'
+  Plug 'airblade/vim-gitgutter'
+  Plug 'junegunn/goyo.vim', { 'on': 'Goyo' } " Only load Goyo on Goyo command
+  Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+  Plug 'chrisbra/Colorizer', { 'on': 'ColorHighlight' }
 
-" Plug 'kshenoy/vim-signature'
-" Plug 'tpope/vim-eunuch'
-" Plug 'andrewradev/splitjoin.vim'
+  " Syntax Highlighting/ Lang Support
+  Plug 'sheerun/vim-polyglot'
 
-" Syntax Highlighting/ Lang Support
-" Plug 'sheerun/vim-polyglot'
-" Only load language support packs when needed to cut startup time
-" Plug 'uiiaoo/java-syntax.vim', { 'for': 'java' }
-" Plug 'yuezk/vim-js', { 'for': 'javascript' }
-" Plug 'lervag/vimtex', { 'for': 'tex' }
+  " Only load language support packs when needed to cut startup time
+  Plug 'uiiaoo/java-syntax.vim', { 'for': 'java' }
+  Plug 'yuezk/vim-js', { 'for': 'javascript' }
+  Plug 'lervag/vimtex', { 'for': 'tex' }
+  Plug 'alvan/vim-closetag', { 'for': ['html', 'jsx', 'js', 'vue'] } " Only load on langs that use markup
 
-" Color Schemes
-Plug 'drewtempelmeyer/palenight.vim'
-" Plug 'KeitaNakamura/neodark.vim'
-" Plug 'embark-theme/vim', { 'as': 'embark' }
-" Plug 'aereal/vim-colors-japanesque'
+  " Plug 'aereal/vim-colors-japanesque'
+  Plug 'wojciechkepka/bogster'
 call plug#end()
 
 filetype plugin indent on
@@ -40,7 +33,7 @@ set number relativenumber
 set hidden
 set smartcase
 set list
-set listchars=tab:<->,nbsp:+,eol:·
+set listchars=tab:<->,nbsp:+
 set tabstop=2 expandtab shiftwidth=2 softtabstop=2
 set splitbelow splitright
 highlight link JavaIdentifier NONE
@@ -60,7 +53,7 @@ autocmd BufWinLeave * call clearmatches()
 " let g:neodark#background = '#251621'
 " colorscheme neodark
 
-colorscheme palenight
+colorscheme bogster
 
 let g:vimtex_view_method = 'zathura'
 let g:vimtex_toc_config = {
@@ -68,22 +61,45 @@ let g:vimtex_toc_config = {
   \'split_width': 50,
   \}
 
-" Due to some glyph rendering issues, I just rewrote this.
-let g:airline_section_z = '%p%% ☰ %l/%L ln : %v (%b)'
 " https://shapeshed.com/vim-statuslines/ - For custom status line project
+let g:currentmode={
+       \ 'n'  : 'NORMAL ',
+       \ 'v'  : 'VISUAL ',
+       \ 'V'  : 'V·Line ',
+       \ "\<C-V>" : 'V·Block ',
+       \ 'i'  : 'INSERT ',
+       \ 'R'  : 'R ',
+       \ 'Rv' : 'V·Replace ',
+       \ 'c'  : 'Command ',
+       \}
+
+function! GitStatus()
+  let [a,m,r] = GitGutterGetHunkSummary()
+  return printf('[+%d ~%d -%d]', a, m, r)
+endfunction
+
+set statusline=
+set statusline+=%#BogsterRedBold#\ %{toupper(g:currentmode[mode()])} " Mode
+set statusline+=%#BogsterBase4#
+set statusline+=\ %F
+set statusline+=\ %{GitStatus()}\ [buffer\ number\ %n]\ %y
+set statusline+=%= " Right Align
+set statusline+=\ ☰\ line\ %l\ of\ %L,\ (%p%%)\ col\ %v
+set statusline+=\  " Padding
 
 " Testing indenting and deindenting without moving cursor
 inoremap <tab> <C-t>
 inoremap <S-tab> <C-d>
 
-" (D)elete (t)o (l)ine (a)bove. Ex:
-"    key: val,    -->  key: val, key2: val2
-"    key2: val2
-" Works anywhere on the bottom line
-nmap dtla kJ
-
 " Get out of terminal mode easier
 tnoremap <Esc> <C-\><C-n>
+
+nmap ss :source %<CR>
+
+" Make working with buffers easier
+nmap nb :bnext <CR>
+nmap nn :bnext <CR>
+
 
 " Split navigation shortcutting
 map <C-h> <C-w>h
@@ -91,16 +107,14 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
-" Remap esc
-imap jk <Esc>
-imap kj <Esc>
-
-" Tab navigation
-map <S-Right> :tabnext<CR>
-map <S-Left> :tabprevious<CR>
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter * set norelativenumber
+augroup END
 
 " Use ctrl-c to comment out lines
-map <C-c> gcc
+map <C-c> gcc<Esc>
 
 " Replace all
 nnoremap Ra :%s//g<Left><Left>
