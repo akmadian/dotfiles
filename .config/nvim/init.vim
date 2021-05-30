@@ -4,20 +4,22 @@ call plug#begin('~/.vim/plugged')
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-surround'
   Plug 'airblade/vim-gitgutter'
+  Plug 'bling/vim-bufferline'
+  Plug 'junegunn/fzf', {'do': { -> fzf#install() }}
+  Plug 'junegunn/fzf.vim'
+  Plug 'airblade/vim-rooter'
   Plug 'junegunn/goyo.vim', { 'on': 'Goyo' } " Only load Goyo on Goyo command
   Plug 'mg979/vim-visual-multi', {'branch': 'master'}
   Plug 'chrisbra/Colorizer', { 'on': 'ColorHighlight' }
 
   " Syntax Highlighting/ Lang Support
   Plug 'sheerun/vim-polyglot'
-
   " Only load language support packs when needed to cut startup time
   Plug 'uiiaoo/java-syntax.vim', { 'for': 'java' }
   Plug 'yuezk/vim-js', { 'for': 'javascript' }
   Plug 'lervag/vimtex', { 'for': 'tex' }
   Plug 'alvan/vim-closetag', { 'for': ['html', 'jsx', 'js', 'vue'] } " Only load on langs that use markup
 
-  " Plug 'aereal/vim-colors-japanesque'
   Plug 'wojciechkepka/bogster'
 call plug#end()
 
@@ -71,6 +73,7 @@ let g:currentmode={
        \ 'R'  : 'R ',
        \ 'Rv' : 'V·Replace ',
        \ 'c'  : 'Command ',
+       \ 't'  : 'Terminal',
        \}
 
 function! GitStatus()
@@ -82,7 +85,8 @@ set statusline=
 set statusline+=%#BogsterRedBold#\ %{toupper(g:currentmode[mode()])} " Mode
 set statusline+=%#BogsterBase4#
 set statusline+=\ %F
-set statusline+=\ %{GitStatus()}\ [buffer\ number\ %n]\ %y
+set statusline+=\ %{GitStatus()}
+set statusline+=\ %y
 set statusline+=%= " Right Align
 set statusline+=\ ☰\ line\ %l\ of\ %L,\ (%p%%)\ col\ %v
 set statusline+=\  " Padding
@@ -94,12 +98,14 @@ inoremap <S-tab> <C-d>
 " Get out of terminal mode easier
 tnoremap <Esc> <C-\><C-n>
 
-nmap ss :source %<CR>
+nmap <silent> ss :source % <CR>
+nmap <silent> rr :redo <CR>
 
 " Make working with buffers easier
-nmap nb :bnext <CR>
-nmap nn :bnext <CR>
-
+nmap <silent> bs :buffers <CR>
+nmap <silent> nb :Files<CR>
+nmap <silent> nn :bnext <CR>
+nmap <silent> bc :bd<CR>
 
 " Split navigation shortcutting
 map <C-h> <C-w>h
@@ -134,4 +140,4 @@ command! Prose setlocal spell | Goyo
 command! Code  colorscheme palenight | set nospell | Goyo!
 
 source ~/.config/nvim/cocnvim.vim
-
+source ~/.config/nvim/fzf.vim
