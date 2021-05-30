@@ -3,6 +3,7 @@ call plug#begin('~/.vim/plugged')
 
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-surround'
+  Plug 'tpope/vim-fugitive'
   Plug 'airblade/vim-gitgutter'
   Plug 'bling/vim-bufferline'
   Plug 'junegunn/fzf', {'do': { -> fzf#install() }}
