@@ -104,9 +104,9 @@ nmap <silent> rr :redo <CR>
 
 " Make working with buffers easier
 nmap <silent> bs :buffers <CR>
-nmap <silent> nb :Files<CR>
+nmap <silent> nb :ene<CR>
 nmap <silent> nn :bnext <CR>
-nmap <silent> bc :bd<CR>
+nmap <silent> bc :bd!<CR>
 
 " Split navigation shortcutting
 map <C-h> <C-w>h
@@ -119,6 +119,10 @@ augroup numbertoggle
   autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
   autocmd BufLeave,FocusLost,InsertEnter * set norelativenumber
 augroup END
+
+" Template File Commands
+command TemplateHTML ene|0r ~/.config/nvim/templates/html.html|set filetype=html
+command TemplateTexPaper ene|0r ~/.config/nvim/templates/doc.tex|set filetype=tex
 
 " Use ctrl-c to comment out lines
 map <C-c> gcc<Esc>
