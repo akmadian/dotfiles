@@ -5,7 +5,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-fugitive'
   Plug 'airblade/vim-gitgutter'
-  Plug 'bling/vim-bufferline'
+  " Plug 'bling/vim-bufferline'
   Plug 'junegunn/fzf', {'do': { -> fzf#install() }}
   Plug 'junegunn/fzf.vim'
   Plug 'airblade/vim-rooter'
@@ -82,6 +82,29 @@ function! GitStatus()
   return printf('[+%d ~%d -%d]', a, m, r)
 endfunction
 
+if &filetype=='tex'
+  let g:word_count="<unknown>"
+  function! UpdateTexWC()
+      let filename = expand("%")
+      let cmd = "detex " . filename . " | wc -w | tr -d [:space:]"
+      let result = system(cmd)
+      let g:word_count = result
+  endfunction
+
+  function! TexWC()
+      return g:word_count
+  endfun
+
+  augroup WordCounter
+      au! BufWritePost * call UpdateTexWC()
+  augroup END
+
+  call UpdateTexWC()
+endif
+
+" how eager are you? (default is 4000 ms)
+" set updatetime=500
+
 set statusline=
 set statusline+=%#BogsterRedBold#\ %{toupper(g:currentmode[mode()])} " Mode
 set statusline+=%#BogsterBase4#
@@ -89,6 +112,9 @@ set statusline+=\ %F
 set statusline+=\ %{GitStatus()}
 set statusline+=\ %y
 set statusline+=%= " Right Align
+if &filetype=='tex'
+  set statusline+=\ %{TexWC()}\ words
+endif
 set statusline+=\ ☰\ line\ %l\ of\ %L,\ (%p%%)\ col\ %v
 set statusline+=\  " Padding
 
@@ -99,7 +125,7 @@ inoremap <S-tab> <C-d>
 " Get out of terminal mode easier
 tnoremap <Esc> <C-\><C-n>
 
-nmap <silent> ss :source % <CR>
+nmap <silent> ss :source ~/.config/nvim/init.vim <CR>
 nmap <silent> rr :redo <CR>
 
 " Make working with buffers easier
@@ -121,8 +147,9 @@ augroup numbertoggle
 augroup END
 
 " Template File Commands
-command TemplateHTML ene|0r ~/.config/nvim/templates/html.html|set filetype=html
-command TemplateTexPaper ene|0r ~/.config/nvim/templates/doc.tex|set filetype=tex
+"       Command Name     new buf, 0r reads file into new buffer,  set proper file type
+command! TemplateHTML     ene|0r ~/.config/nvim/templates/html.html|set filetype=html
+command! TemplateTexPaper ene|0r ~/.config/nvim/templates/doc.tex|set filetype=tex
 
 " Use ctrl-c to comment out lines
 map <C-c> gcc<Esc>
@@ -131,7 +158,7 @@ map <C-c> gcc<Esc>
 nnoremap Ra :%s//g<Left><Left>
 
 " Clean up tex build files whenever a .tex file is closed - From Luke Smith's dotfiles
-autocmd VimLeave *.tex !texclear %
+" autocmd VimLeave *.tex !texclear %
 nmap tc VimtexTocOpen
 
 " Save file as sudo on files that require root
