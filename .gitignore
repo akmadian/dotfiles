@@ -1,1 +1,3 @@
-.config/dwm/__*
+.config/dwm/
+.config/nvim/spell/
+.config/fish/fish_variables

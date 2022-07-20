@@ -3,10 +3,13 @@
 
 set -Ua fish_user_paths $HOME/cs/CSE-374/scripts
 set -Ua fish_user_paths $HOME/.local/bin
+set -Ua fish_user_paths $HOME/repos/clones/flutter/bin
+set -Ua fish_user_paths $HOME/.pub-cache/bin
 set -Ux GPG_TTY (tty)
 set -x TMPDIR "/tmp"
 set -Ux EDITOR nvim
-set -Ux BROWSER brave
+set -Ux BROWSER librewolf
+set -Ux CHROME_BROWSER librewolf
 # set -Ux MANPAGER "nvim -c 'set ft=man'"
 set -Ux MANPAGER "bat"
 
@@ -36,15 +39,6 @@ alias tree="exa --tree --level=2"
 alias grep='grep --color=auto'
 alias cat='bat'
 
-# Git Bare Repo Dotfiles Setup
-alias df="/usr/bin/git --git-dir=$HOME/repos/dotfiles --work-tree=$HOME"
-alias dotfiles="df"
-alias dfs="df status"
-alias dfa="df add"
-alias dfc="df commit -m"
-alias dfp="df push"
-alias dfaa="df add ."
-
 # General
 alias cls="clear"
 alias ssn="sudo shutdown now"
@@ -56,9 +50,11 @@ alias xcs="xclip -selection c"
 
 alias yt="youtube-dl --add-metadata -i"
 alias yta="yt -x -f bestaudio/best"
+alias rs="rsync -raP --info=progress2"
 
 alias fishconfig='nvim ~/.config/fish/config.fish'
 alias nvimconfig='nvim ~/.config/nvim/init.vim'
+alias so='source ~/.config/fish/config.fish'
 
 # Navigation
 alias ..="cd .."
@@ -66,14 +62,8 @@ alias cdd="cd ~/Downloads"
 alias q="exit"
 abbr -a -- - 'cd -' # Cause alias - doesn't work
 
-alias reddit="tuir --enable-media"
-alias openrgb="sudo ~/Downloads/OpenRGB_0.5_x86_64_88464d1.AppImage"
-alias weather="curl wttr.in"
-alias cheat="curl cheat.sh/$1"
 alias s="startx"
-
-# Makes NextCloud re-index files
-alias nci="ssh www-data@nc.madian.co 'php /var/www/nc.madian.co/occ files:scan --all'"
+alias c="clear && pwd && ll"
 
 # Recursively removes x perm from all files in working dir, ignores dirs
 alias deexec="find . -type f -print0 | xargs -0 chmod -x"
