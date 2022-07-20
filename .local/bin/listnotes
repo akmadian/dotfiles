@@ -1,0 +1,2 @@
+#!/bin/bash
+exa -al --color=always --group-directories-first --header ~/docs/notes

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+fname=`date +"%s"`
+fpath=/home/ari/docs/notes/"$fname".md
+touch $fpath
+echo -e "$(date)\n\n" >> $fpath
+nvim -u ~/.config/nvim/notes/init.vim +3 -c ":startinsert" $fpath

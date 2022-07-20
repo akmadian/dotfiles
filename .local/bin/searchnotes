@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd ~/docs/notes/
+nvim -u ~/.config/nvim/notes/init.vim -c ":Rg"
